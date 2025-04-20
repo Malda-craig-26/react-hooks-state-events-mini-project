@@ -6,19 +6,20 @@ import App from "../components/App";
 
 test("calls the onTaskFormSubmit callback prop when the form is submitted", () => {
   const onTaskFormSubmit = jest.fn();
+
   render(
     <NewTaskForm categories={CATEGORIES} onTaskFormSubmit={onTaskFormSubmit} />
   );
 
-  fireEvent.change(screen.queryByLabelText(/Details/), {
+  fireEvent.change(screen.getByLabelText(/Details/), {
     target: { value: "Pass the tests" },
   });
 
-  fireEvent.change(screen.queryByLabelText(/Category/), {
+  fireEvent.change(screen.getByLabelText(/Category/), {
     target: { value: "Code" },
   });
 
-  fireEvent.submit(screen.queryByText(/Add task/));
+  fireEvent.submit(screen.getByTestId("task-form")); // ✅ Submit the form element
 
   expect(onTaskFormSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -33,15 +34,15 @@ test("adds a new item to the list when the form is submitted", () => {
 
   const codeCount = screen.queryAllByText(/Code/).length;
 
-  fireEvent.change(screen.queryByLabelText(/Details/), {
+  fireEvent.change(screen.getByLabelText(/Details/), {
     target: { value: "Pass the tests" },
   });
 
-  fireEvent.change(screen.queryByLabelText(/Category/), {
+  fireEvent.change(screen.getByLabelText(/Category/), {
     target: { value: "Code" },
   });
 
-  fireEvent.submit(screen.queryByText(/Add task/));
+  fireEvent.submit(screen.getByTestId("task-form")); // ✅ Submit the form element
 
   expect(screen.queryByText(/Pass the tests/)).toBeInTheDocument();
 
